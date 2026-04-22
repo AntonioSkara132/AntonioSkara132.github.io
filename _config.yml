@@ -1,0 +1,33 @@
+title: My GitHub Page
+description: Personal website hosted with GitHub Pages
+theme: minima
+
+# Site settings
+url: "https://yourusername.github.io"
+baseurl: "" # leave blank if using username.github.io, use "/repo-name" for project pages
+
+author:
+  name: Your Name
+  email: your@email.com
+
+# Social links (optional)
+github_username: yourusername
+linkedin_username: yourlinkedin
+twitter_username: yourtwitter
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Exclude files from build
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
