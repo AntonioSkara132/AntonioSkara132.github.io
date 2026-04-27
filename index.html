@@ -135,15 +135,33 @@
             <p>Research project exploring Transformer architectures for robotic trajectory generation from natural language commands.</p>
         </header>
 
-        <section class="section">
-            <h2>Introduction & Related Work</h2>
-            <p>
-                This work is built on the premise that trajectory generation can be formulated as a <strong>sequence modeling problem</strong> <span class="citation">[1]</span>. 
-                In this framework, each sequence element consists of states, actions, and rewards. 
-                The system architecture draws inspiration from recent advancements in robotics and multimodal learning <span class="citation">[3, 5, 6]</span>.
-            </p>
-        </section>
+        <p>
+            The goal of this project is to enable a robot to generate and execute drawing trajectories directly from natural language commands such as
+            <em>"draw a large square in the middle"</em> or <em>"draw a circle next to a triangle"</em>. Instead of manually programming robot motion,
+            the system learns to translate language into a sequence of tool positions and drawing actions, allowing more intuitive human-robot interaction.
+        </p>
 
+        <p>
+            This work is based on the idea that trajectory generation can be formulated as a <strong>sequence modeling problem</strong> <span class="citation">[1]</span>,
+            where each element of the sequence contains states, actions, and rewards. In our case, the sequence represents robot positions together with
+            information about whether the robot should actively draw or simply move to the next point. This formulation allows the use of Transformer-based
+            architectures that have shown strong performance in both robotics and sequential decision making.
+        </p>
+
+        <p>
+            The architecture is inspired by recent work in language-conditioned robotics and multimodal learning <span class="citation">[3, 5, 6]</span>,
+            especially approaches where natural language is used to guide trajectory generation instead of low-level control commands. Similar ideas appear
+            in robotic manipulation systems such as RT-1 and LATTE, where language acts as a high-level specification of desired behavior.
+        </p>
+
+        <p>
+            Our current setup focuses on procedural generation of simple geometric shapes such as circles, squares, triangles, and lines, combined with
+            spatial modifiers like <em>center</em>, <em>left side</em>, <em>corner</em>, or relative descriptions such as <em>next to another shape</em>.
+            This creates a controlled environment for evaluating whether the model can generalize to unseen combinations of commands.
+        </p>
+
+
+    </section>
         <section class="section">
             <h2>Architecture</h2>
             <p>
@@ -167,20 +185,31 @@
             </div>
         </section>
 
-        <section class="section">
-            <h2>Data Representation</h2>
-            <p>Data is procedurally generated in Python and consists of a command label paired with a list of position/action tuples:</p>
-            <div style="background: var(--code-bg); padding: 15px; border-radius: 10px; font-family: monospace; border: 1px solid var(--border); margin-bottom: 20px; color: var(--cyan);">
-                [x1, y2, a1, s1, x2, y2, a2, s2 …]
-            </div>
+    <section class="section">
+        <h2>Dataset Representation</h2>
 
-            <h3>Supported Logic:</h3>
-            <div class="data-list">
-                <div class="data-item"><strong>Primitives:</strong> Circles, lines, squares, triangles.</div>
-                <div class="data-item"><strong>Spatial Modifiers:</strong> Center, left/right side, corners, relative positioning.</div>
-                <div class="data-item"><strong>Composition:</strong> Multi-shape commands (e.g., "Circle and Triangle in the middle").</div>
+        <p>
+            Data is procedurally generated in Python and consists of a command label paired with a sequence of position-action tuples:
+        </p>
+
+        <div class="card" style="font-family: monospace; color: var(--cyan);">
+            [x1, y1, a1, s1, x2, y2, a2, s2 ...]
+        </div>
+
+        <p>
+            Here, <strong>x</strong> and <strong>y</strong> represent the tool position, <strong>a</strong> determines whether the robot is drawing
+            (0 = move only, 1 = draw), and <strong>s</strong> marks the end of the trajectory (1 = end of sequence).
+            Each example contains both the path from a random starting point to the target shape and the trajectory required to draw the shape itself.
+        </p>
+
+            <div class="media-container">
+                <img src="images/dataset.png" alt="System Architecture Diagram">
+                <div style="padding: 10px; font-size: 0.8rem; text-align: center; color: var(--text-dim);">
+                    Figure 1: High-level architecture illustrating the integration of BERT encoder with the Transformer decoder.
+                </div>
             </div>
-        </section>
+    </section>
+
 
         <section class="section">
             <h2>Experimental Results</h2>
@@ -195,6 +224,17 @@
                 </div>
             </div>
         </section>
+
+	<section class="section">
+            <h2>Future work</h2>
+            <p>
+              In future work, external datasets such as Quick, Draw! and TU Berlin could also be used. This would require richer text annotations instead
+              of simple class labels. For example, instead of using only the label <em>"cat"</em>, the model could learn from descriptive captions such as
+              <em>"a smiling cat with long ears"</em>. Such descriptions would better exploit the semantic understanding of the language encoder and improve
+              generalization to more complex instructions.
+            </p>
+	</section>
+<!-- </div> -->
 
         <section class="section">
             <h2>References</h2>
@@ -213,7 +253,7 @@
                 Faculty of Electrical Engineering and Computing (FER), University of Zagreb
             </p>
         </footer >
-    </div>
 
+</div>
 </body>
 </html>
